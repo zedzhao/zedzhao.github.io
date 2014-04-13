@@ -9,7 +9,7 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content=" Blog Archives Recent Posts ">
+  <meta name="description" content="Timing Protocol CAMediaTimingFunction *timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.9f :0.9f :0.25f :1.0f]; 这里的参数是 cx1 : cy1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,204 @@
       <div class="blog-index">
   
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/07/core-animation/">Core Animation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-07T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Timing Protocol</h2>
+
+<div>
+  <pre><code class='objective-c'>CAMediaTimingFunction *timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.9f :0.9f :0.25f :1.0f];</code></pre>
+</div>
+
+
+<p>这里的参数是 cx1 : cy1 : cx2 : cy2， 代表2个point，加上函数默认的两个point实际上有四个坐标 (0,0), (cx1,cy1), (cx2, cy2), (1,1). 最后是根据这四个坐标画出一个Bezier曲线，可以理解为 y坐标代表动画的执行速度，x基本上是0 到 1是一个线性的变化；即是曲线越陡，执行越快。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/06/about-uigesturerecognizer/">About UIGestureRecognizer</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-06T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Gesture 与 touch</h3>
+
+<p>事件传递顺序如下图
+<img src="/Users/zhaokun/Documents/jekyll/zedzhao.github.io/images/screenshot/GestureSequence.png" alt="image" /></p>
+
+<p>如果当前view加上一个tapGesture，点击当前view时输出结果如下</p>
+
+<blockquote><p> touch Began</p>
+
+<p> tap</p>
+
+<p> touch Cancel</p></blockquote>
+
+<ul>
+<li><p>delaysTouchesBegan</p>
+
+<p>  简单理解为touch事件传递给<code>touchBegan</code>会被delay一段时间，即会优先响应gesture事件。</p></li>
+<li><p>delaysTouchesEnded</p>
+
+<p>  同上，touch事件传递给<code>touchEnded</code>会被delay.</p></li>
+</ul>
+
+
+<blockquote><p>With the property set to YES, the view gets touchesBegan:withEvent:, touchesBegan:withEvent:, touchesCancelled:withEvent:, and touchesCancelled:withEvent:. If this property is set to NO, the view gets the following sequence of messages: touchesBegan:withEvent:, touchesEnded:withEvent:, touchesBegan:withEvent:, and touchesCancelled:withEvent:, which means that in touchesBegan:withEvent:, the view can recognize a double tap.</p></blockquote>
+
+<pre><code>上面这段扯下来说， 如果一个双击的tap事件，这个属性设为NO的话，相当于touchBegan也可以识别这个双击手势。
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/22/UITextField-Keyboard/">关于UITextField和Keyboard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-22T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>想点击当前viewController中任意地方隐藏键盘可以用如下代码实现。</li>
+</ul>
+
+
+<div>
+  <pre><code class='ruby'>- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    _isKeyboardDisplay = NO;
+    [self.view endEditing:YES];
+}</code></pre>
+</div>
+
+
+<ul>
+<li>下面的代码处理keyboard遮挡住输入框的问题，并且通过<code>_isKeybordDisplay</code> 来解决两个输入框时，来回切换输入框焦点时键盘会收回再弹出的问题。</li>
+</ul>
+
+
+<div>
+  <pre><code class='objective-c'>- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    _isKeyboardDisplay = NO;
+    [self.view endEditing:YES];
+}
+
+- (void)animateTextField: (UITextField*) textField up:(BOOL)up
+{
+  
+    const int movementDistance = 100;
+    const float movementDuration = .3f;
+    int movement = (up ? -movementDistance : movementDistance);
+    if (_isKeyboardDisplay) {
+        return;
+    }
+    [UIView animateWithDuration:movementDuration animations:^{
+        self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+        }];
+    if (up) {
+        _isKeyboardDisplay = YES;
+    }else{
+        _isKeyboardDisplay =NO ;
+    }
+
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [self animateTextField:textField up:YES];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (_isKeyboardDisplay) {
+        return;
+    }
+    [self animateTextField:textField up:NO];
+}</code></pre>
+</div>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -77,6 +275,18 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/07/core-animation/">Core Animation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/06/about-uigesturerecognizer/">About UIGestureRecognizer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/22/UITextField-Keyboard/">关于UITextField和Keyboard</a>
+      </li>
     
   </ul>
 </section>

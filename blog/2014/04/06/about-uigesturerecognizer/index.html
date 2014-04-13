@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - My Octopress Blog</title>
+  <title>About UIGestureRecognizer - My Octopress Blog</title>
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="Blog Archive 2014 Core Animation
-Apr 07 2014 About UIGestureRecognizer
-Apr 06 2014 关于UITextField和Keyboard
-Mar 22 2014 Recent Posts Core Animation &hellip;">
+  <meta name="description" content="Gesture 与 touch 事件传递顺序如下图 如果当前view加上一个tapGesture，点击当前view时输出结果如下 touch Began tap touch Cancel delaysTouchesBegan 简单理解为touch事件传递给touchBegan会被delay一段时间 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@ Mar 22 2014 Recent Posts Core Animation &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zedzhao.github.io/blog/archives">
+  <link rel="canonical" href="http://zedzhao.github.io/blog/2014/04/06/about-uigesturerecognizer">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
@@ -67,51 +64,106 @@ Mar 22 2014 Recent Posts Core Animation &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">About UIGestureRecognizer</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-06T00:00:00+08:00" pubdate data-updated="true"></time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><h3>Gesture 与 touch</h3>
 
-  
-  <h2>2014</h2>
+<p>事件传递顺序如下图
+<img src="/Users/zhaokun/Documents/jekyll/zedzhao.github.io/images/screenshot/GestureSequence.png" alt="image" /></p>
 
-<article>
-  
-<h1><a href="/blog/2014/04/07/core-animation/">Core Animation</a></h1>
-<time datetime="2014-04-07T00:00:00+08:00" pubdate><span class='month'>Apr</span> <span class='day'>07</span> <span class='year'>2014</span></time>
+<p>如果当前view加上一个tapGesture，点击当前view时输出结果如下</p>
 
+<blockquote><p> touch Began</p>
 
-</article>
+<p> tap</p>
 
+<p> touch Cancel</p></blockquote>
 
+<ul>
+<li><p>delaysTouchesBegan</p>
 
-<article>
-  
-<h1><a href="/blog/2014/04/06/about-uigesturerecognizer/">About UIGestureRecognizer</a></h1>
-<time datetime="2014-04-06T00:00:00+08:00" pubdate><span class='month'>Apr</span> <span class='day'>06</span> <span class='year'>2014</span></time>
+<p>  简单理解为touch事件传递给<code>touchBegan</code>会被delay一段时间，即会优先响应gesture事件。</p></li>
+<li><p>delaysTouchesEnded</p>
 
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/03/22/UITextField-Keyboard/">关于UITextField和Keyboard</a></h1>
-<time datetime="2014-03-22T00:00:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>22</span> <span class='year'>2014</span></time>
+<p>  同上，touch事件传递给<code>touchEnded</code>会被delay.</p></li>
+</ul>
 
 
-</article>
+<blockquote><p>With the property set to YES, the view gets touchesBegan:withEvent:, touchesBegan:withEvent:, touchesCancelled:withEvent:, and touchesCancelled:withEvent:. If this property is set to NO, the view gets the following sequence of messages: touchesBegan:withEvent:, touchesEnded:withEvent:, touchesBegan:withEvent:, and touchesCancelled:withEvent:, which means that in touchesBegan:withEvent:, the view can recognize a double tap.</p></blockquote>
 
+<pre><code>上面这段扯下来说， 如果一个双击的tap事件，这个属性设为NO的话，相当于touchBegan也可以识别这个双击手势。
+</code></pre>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-06T00:00:00+08:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zedzhao.github.io/blog/2014/04/06/about-uigesturerecognizer/" data-via="" data-counturl="http://zedzhao.github.io/blog/2014/04/06/about-uigesturerecognizer/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/22/UITextField-Keyboard/" title="Previous Post: 关于UITextField和Keyboard">&laquo; 关于UITextField和Keyboard</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/04/07/core-animation/" title="Next Post: Core Animation">Core Animation &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

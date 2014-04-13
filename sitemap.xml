@@ -1,6 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://zedzhao.github.io/blog/2014/03/22/UITextField-Keyboard/</loc>
+        <lastmod>2014-04-13T21:51:47+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://zedzhao.github.io/blog/2014/04/06/about-uigesturerecognizer/</loc>
+        <lastmod>2014-04-13T21:51:47+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://zedzhao.github.io/blog/2014/04/07/core-animation/</loc>
+        <lastmod>2014-04-13T21:51:47+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://zedzhao.github.io/blog/archives/</loc>
         <lastmod>2014-04-13T21:51:47+08:00</lastmod>
     </url>
