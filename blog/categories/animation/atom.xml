@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Animation | My Octopress Blog]]></title>
+  <link href="http://zedzhao.github.io/blog/categories/animation/atom.xml" rel="self"/>
+  <link href="http://zedzhao.github.io/"/>
+  <updated>2014-05-07T23:34:27+08:00</updated>
+  <id>http://zedzhao.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[About PresentationLayer]]></title>
+    <link href="http://zedzhao.github.io/blog/2014/05/07/about-presentationlayer/"/>
+    <updated>2014-05-07T22:11:54+08:00</updated>
+    <id>http://zedzhao.github.io/blog/2014/05/07/about-presentationlayer</id>
+    <content type="html"><![CDATA[<h3>PresentationLayer到底是什么~</h3>
+
+<p>官方文档中是这么写的:</p>
+
+<pre><code>The layer object returned by this method provides a close approximation of the layer that is currently being displayed onscreen. While an animation is in progress, you can retrieve this object and use it to get the current values for those animations.
+</code></pre>
+
+<p>翻译过来是说，这个<code>presentationLayer</code>返回的是一个非常接近当前显示在屏幕上<code>layer</code>。比如当前layer正在执行一个动画，那么可以通过这个属性来获取layer当前的一些状态。</p>
+
+<p>写点代码来搞清楚这个到底是做什么的~~</p>
+
+<p>新建一个layer
+<div>
+  <pre><code class='objective-c'>&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CALayer *movingLayer = [CALayer layer];
+[movingLayer setBounds:CGRectMake(0, 0, layerSize, layerSize)];
+[movingLayer setBackgroundColor:[UIColor orangeColor].CGColor];
+[movingLayer setPosition:CGPointMake(layerCenterInset, layerCenterInset)];
+[self.view.layer addSublayer:movingLayer];
+[self setMovingLayer:movingLayer];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;</code></pre>
+</div>
+</p>
+
+<p>添加一个动画
+<div>
+  <pre><code class='objective-c'>&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CAKeyframeAnimation *moveLayerAnimation = [CAKeyframeAnimation animationWithKeyPath:@&quot;position&quot;];
+
+[moveLayerAnimation setValues:@[[NSValue valueWithCGPoint:CGPointMake(100, 100)], [NSValue valueWithCGPoint:CGPointMake(200, 250)]]];
+
+moveLayerAnimation.repeatCount = HUGE_VALF;
+moveLayerAnimation.duration = 2.0;
+[moveLayerAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+moveLayerAnimation.calculationMode = kCAAnimationCubic;
+[self.movingLayer addAnimation:moveLayerAnimation forKey:@&quot;move&quot;];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;</code></pre>
+</div>
+</p>
+
+<p>然后我们加一个Gesture在当前view
+<div>
+  <pre><code class='objective-c'>&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (IBAction)pressedLayer:(UIGestureRecognizer*)gestureRecognizer{
+CGPoint touchPoint =[gestureRecognizer locationInView:self.view];
+
+if ([self.movingLayer.presentationLayer hitTest:touchPoint]) {
+    [self blinkLayerWithColor:[UIColor yellowColor]];
+}else if ([self.movingLayer hitTest:touchPoint]){
+    [self blinkLayerWithColor:[UIColor redColor]];
+}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;</code></pre>
+</div>
+</p>
+
+<p>OK，运行一下代码，可以看到，当我们点击显示在屏幕上的layer的时候，会变黄色， 点击layer的原始位置会变红色。</p>
+
+<p>由此得出结论， presentationLayer实际上就是先在在屏幕上的layer，而在任何的动画效果中，原始的layer的状态其实是不会改变的。即是说，动画只是动画而已，不会改变CALayer任何的属性，如果想要让layer保持动画结束时的状态，需要自己手动修改。</p>
+
+<p>Demo <a href="https://github.com/zedzhao/CoreAnimationLessons/tree/master/PresentationLayer">PresentationLayer</a></p>
+]]></content>
+  </entry>
+  
+</feed>
