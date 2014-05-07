@@ -65,4 +65,5 @@ OK，运行一下代码，可以看到，当我们点击显示在屏幕上的lay
 
 由此得出结论， presentationLayer实际上就是先在在屏幕上的layer，而在任何的动画效果中，原始的layer的状态其实是不会改变的。即是说，动画只是动画而已，不会改变CALayer任何的属性，如果想要让layer保持动画结束时的状态，需要自己手动修改。
 
-Demo [PresentationLayer](https://github.com/zedzhao/CoreAnimationLessons/tree/master/PresentationLayer)
+- Demo [PresentationLayer](https://github.com/zedzhao/CoreAnimationLessons/tree/master/PresentationLayer)
+- 参照Blog:[Hit testing animating  layers](http://ronnqvi.st/hit-testing-animating-layers/)
